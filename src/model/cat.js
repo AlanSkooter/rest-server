@@ -1,7 +1,7 @@
 const { createReadStream, writeFile } = require('fs')
 const path = require('path')
 
-const dbJsonPath = path.resolve(process.cwd(), 'src/services/db_cats.json')
+const dbJsonPath = path.resolve(process.cwd(), 'services/db_cats.json')
 
 const readJSONAsync = (path) => new Promise((resolve) => {
     const readStream = createReadStream(path)

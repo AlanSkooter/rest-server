@@ -1,4 +1,5 @@
 const catModel = require('../model/cat')
+const userModel = require('../model/user')
 const { v4: uuid } = require('uuid')
 
 const getNotFoundResponse = (res) => {
@@ -71,6 +72,13 @@ exports.getCatById = async (res, catId) => {
 
 exports.createCat = async (req) => {
     const catData = await parseJsonBody(req)
+    if (catData.ownerId) {
+    const users = await userModel.fetchAllUsers()
+    const userIndex = users.findIndex((user) => user.id === catData.ownerId);
+    if (userIndex === -1) {
+        return getNotFoundResponse(res);
+      }
+    }
     catData.id = uuid()
     await catModel.addNewCat(catData)
     return {
@@ -82,6 +90,13 @@ exports.updateCatById = async (req, res, catId) => {
     const updateData = await parseJsonBody(req)
     const cat = await catModel.fetchCatById(catId)
     const updatedCat = { ...cat, ...updateData }
+    if (updatedCat.ownerId) {
+        const users = await userModel.fetchAllUsers()
+        const userIndex = users.findIndex((user) => user.id === updatedCat.ownerId);
+        if (userIndex === -1) {
+            return getNotFoundResponse(res);
+          }
+        }
     const updateResult = await catModel.update(updatedCat)
     if (!updateResult) {
         return getNotFoundResponse(res)

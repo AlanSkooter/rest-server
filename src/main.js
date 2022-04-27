@@ -9,6 +9,7 @@ const server = createServer((req, res) => {
 })
 
 server.listen(port, host, err => {
+    console.log('Работает!')
     if (err) {
         console.error(err)
     }
