@@ -52,4 +52,9 @@ router.on('DELETE', '/user/:userId', async (req, res, { userId }) => {
     res.end(JSON.stringify(result))
 })
 
+router.on('DELETE', '/user', async (req, res) => {
+    const result = await userController.deleteUsers(req)
+    res.end(JSON.stringify(result))
+})
+
 module.exports = router

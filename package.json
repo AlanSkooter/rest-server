@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^16.11.26",
-    "find-my-way": "^5.4.0",
+    "find-my-way": "^5.5.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

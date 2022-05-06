@@ -69,11 +69,17 @@ exports.updateUserById = async (req, res, userId) => {
 }
 
 exports.deleteUserById = async (res, userId) => {
-    const updateResult = await userModel.delete(userId)
+    const updateResult = await userModel.deleteUserById(userId)
     if (!updateResult) {
         return getNotFoundResponse(res)
     }
     return {
         id: userId
     }
+}
+
+exports.deleteUsers = async (req) => {
+    const usersId = await parseJsonBody(req)
+    const deleteResult = await userModel.deleteUsers(usersId)
+    return deleteResult
 }

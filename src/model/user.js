@@ -58,7 +58,7 @@ exports.update = async (dataOfNewUser) => {
     return true
 }
 
-exports.delete = async (id) => {
+exports.deleteUserById = async (id) => {
     const users = await readJSONAsync(dbJsonPath)
     let userBeenFound = false
     const filteredUsers = users.filter(user => {
@@ -80,4 +80,22 @@ exports.delete = async (id) => {
         return true
     }
     return false
+}
+
+exports.deleteUsers = async (data) => {
+    const users = await readJSONAsync(dbJsonPath)
+    const cats = await readJSONAsync(dbJsonCatsPath)
+    const usersAfterDelete = users.reduce((afterDelete, user) => {
+        if (!data.find((id) => id === user.id)) {
+            afterDelete.push(user)
+            cats.find((cat) => {
+                if (data.includes(cat.ownerId)) {
+                    cat.ownerId = null
+                }
+            })
+        }
+        return afterDelete
+      }, [])
+      await writeJSONAsync(dbJsonCatsPath, cats)
+      await writeJSONAsync(dbJsonPath, usersAfterDelete)
 }
